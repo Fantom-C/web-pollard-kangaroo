@@ -585,7 +585,7 @@
 </div>
 
 <div id="footer">
-    <div>pollard kangaroo · by <b>Fantom-C</b></div>
+    <div>pollard kangaroo v 1.1 · by <b>Fantom-C</b></div>
     <div class="donate">
         <span class="donate-label">₿ donate:</span>
         <span class="donate-addr"><b>1Eifq7WGfTjLUF6jbdoK9BMqYJ69nEfo7m</b></span>
@@ -1715,8 +1715,7 @@ function readNum(str) {
     if (!str) return null;
     try {
         if (/^0x/i.test(str)) return BigInt(str);
-        if (/[a-fA-F]/.test(str)) return BigInt('0x' + str);
-        if (str.length > 20) return BigInt('0x' + str);
+        if (/[a-fA-F]/.test(str)) return BigInt('0x' + str);        
         return BigInt(str);
     } catch { return null; }
 }
