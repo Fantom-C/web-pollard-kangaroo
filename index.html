@@ -178,86 +178,53 @@
     #footer .donate-addr b { color: #ffd54f; }
 
     /* ─── RESPONSIVE LAYOUT ─── */
-
-    /* Laptop */
     @media (max-width: 1400px) {
         .sidebar { width: 480px; }
         .circle-area { width: 380px; }
     }
-
-    /* Tablet landscape / Small laptop */
     @media (max-width: 1100px) {
         body { overflow: auto; }
         .app {
-            flex-wrap: wrap;
-            height: auto;
-            overflow: visible;
-            align-items: flex-start;
+            flex-wrap: wrap; height: auto; overflow: visible; align-items: flex-start;
         }
         .sidebar {
-            width: 100%;
-            border-right: none;
-            border-bottom: 1px solid #1a1a1a;
+            width: 100%; border-right: none; border-bottom: 1px solid #1a1a1a;
             overflow-y: visible;
         }
         .main-area {
-            width: 60%;
-            flex: 1 1 60%;
-            height: 480px;
-            padding: 10px;
+            width: 60%; flex: 1 1 60%; height: 480px; padding: 10px;
             border-right: 1px solid #1a1a1a;
         }
         .circle-area {
-            width: 40%;
-            flex: 1 1 40%;
-            height: 480px;
-            border-left: none;
-            border-top: none;
-            overflow-y: auto;
+            width: 40%; flex: 1 1 40%; height: 480px;
+            border-left: none; border-top: none; overflow-y: auto;
         }
-        .legend-row { gap: 6px; }
     }
-
-    /* Tablet portrait / Mobile */
     @media (max-width: 800px) {
         body { padding-bottom: 52px; }
-        .app {
-            flex-direction: column;
-            height: auto;
-            align-items: stretch;
-        }
+        .app { flex-direction: column; height: auto; align-items: stretch; }
         .sidebar { width: 100%; height: auto; padding: 8px; }
         .main-area {
-            width: 100%;
-            height: 380px;
-            flex: none;
-            border-right: none;
-            border-bottom: 1px solid #1a1a1a;
+            width: 100%; height: 380px; flex: none;
+            border-right: none; border-bottom: 1px solid #1a1a1a;
         }
         .circle-area {
-            width: 100%;
-            height: auto;
-            border-left: none;
-            border-top: 1px solid #1a1a1a;
-            overflow-y: visible;
+            width: 100%; height: auto; border-left: none;
+            border-top: 1px solid #1a1a1a; overflow-y: visible;
         }
         .panel-box { margin-bottom: 8px; }
         #footer { padding: 6px 0; font-size: 11px; }
         #footer .donate { font-size: 10px; }
-        
-        /* Make inputs/buttons larger for touch */
         .field input, .field select { padding: 8px 10px; font-size: 14px; }
         button { padding: 8px 12px; font-size: 13px; }
         h1 { font-size: 14px; }
         #log { font-size: 13px; }
     }
-
-    /* Small mobile */
     @media (max-width: 500px) {
         .main-area { height: 300px; }
         .sidebar { padding: 6px; }
         .group { padding: 6px 8px 8px; margin-bottom: 6px; }
-        .hint { display: none; } /* Hide hints to save space */
+        .hint { display: none; }
     }
 </style>
 </head>
@@ -268,7 +235,7 @@
   "en": {
     "ui": {
       "title": "🐾 Pollard Kangaroo",
-      "g": {"mode":"1. Input mode","data":"2. Data","range":"3. Search range","params":"4. Parameters","control":"5. Control","tame":"6. Manual kangaroos"},
+      "g": {"mode":"1. Input mode","data":"2. Data","range":"3. Search range","params":"4. Parameters","control":"5. Control","tame":"6. Manual kangaroos","wild":"7. Wild kangaroos"},
       "mode": {"private":"Private x (test)","compressed":"Compressed Q (02/03 + X)","public":"Q.X, Q.Y (hex)"},
       "data": {
         "x":"x — private key (dec or 0x…)","xHint":"Example: 11111 or 0x2b67.",
@@ -288,6 +255,11 @@
       "tame": {
         "count":"Count (1-20)","mode":"Start mode","modeAuto":"Auto (evenly in range)",
         "modeManual":"Manual","modeRandom":"Random","starts":"Start values",
+        "genRandom":"🎲 Generate Random"
+      },
+      "wild": {
+        "count":"Count (1-20)","mode":"Offset mode","modeAuto":"Auto (symmetric)",
+        "modeManual":"Manual","modeRandom":"Random","starts":"Offsets (dec or 0x…)",
         "genRandom":"🎲 Generate Random"
       },
       "ctrl": {
@@ -323,7 +295,7 @@
       }
     },
     "log": {
-      "glossary": "═══ LEGEND (WHAT EACH SYMBOL MEANS) ═══\n  x           private key (scalar to find)\n  Q           public point, Q = x·G\n  G           secp256k1 generator\n  min, max    range bounds, x ∈ [min, max)\n  W           range width, W = max − min\n  √W          sqrt(W); sets complexity (birthday paradox)\n  K           jump table size; avg jump = 2^K / K\n  dpBit       distinguished filter: low dpBit bits of X must be 0\n  2^dpBit     DP probability; more → less memory, same iterations\n  MAX_ITER    iteration limit\n  direction   R: +G·2^i (up), Tame from min; L: −G·2^i (down), Tame from max\n  Tame        'tame' kangaroo(s) starting from min (or max for L)\n  Wild        'wild' kangaroo starting from Q\n  tEff        Tame accumulated scalar step\n  wTrack      Wild accumulated scalar step\n  E[jumps]    = 2.5·√(W·T) — expected total jumps (T tames)\n  E[memory]   = √(W·T) / 2^dpBit — expected map entries\n  ~250 B      memory per Map entry (hex key + BigInt + overhead)\n  On collision of X-coordinates:\n    x = tameStart + sign·(tEff − wTrack)         (same Y)\n    x = −tameStart − sign·(tEff + wTrack)        (opposite Y)\n════════════════════════════════════════",
+      "glossary": "═══ LEGEND (WHAT EACH SYMBOL MEANS) ═══\n  x           private key (scalar to find)\n  Q           public point, Q = x·G\n  G           secp256k1 generator\n  min, max    range bounds, x ∈ [min, max)\n  W           range width, W = max − min\n  √W          sqrt(W); sets complexity (birthday paradox)\n  K           jump table size; avg jump = 2^K / K\n  dpBit       distinguished filter: low dpBit bits of X must be 0\n  2^dpBit     DP probability; more → less memory, same iterations\n  MAX_ITER    iteration limit\n  direction   R: +G·2^i (up), Tame from min; L: −G·2^i (down), Tame from max\n  Tame        'tame' kangaroo(s) starting from min (or max for L)\n  Wild        'wild' kangaroo(s) starting from Q + offset·G\n  tEff        Tame accumulated scalar step\n  wTrack      Wild accumulated scalar step\n  E[jumps]    = 2.5·√(W·T) — expected total jumps (T tames)\n  E[memory]   = √(W·T) / 2^dpBit — expected map entries\n  ~250 B      memory per Map entry (hex key + BigInt + overhead)\n  On collision of X-coordinates:\n    x = tameStart + sign·(tEff − wTrack)         (same Y)\n    x = −tameStart − sign·(tEff + wTrack)        (opposite Y)\n════════════════════════════════════════",
       "hdr": "POLLARD KANGAROO — DETAILED REPORT",
       "sec.input":"1. INPUT DATA","sec.range":"2. SEARCH RANGE","sec.params":"3. ALGORITHM PARAMETERS",
       "sec.expect":"4. EXPECTED RESULT (THEORY)","sec.start":"5. COMPUTATION START",
@@ -333,7 +305,7 @@
       "f.expMode":"input mode = powers of 2","f.min":"min","f.max":"max","f.W":"W = max−min","f.sqrtW":"√W",
       "f.dir":"direction","f.K":"K (table)","f.avgJump":"avg jump","f.sqrtHalf":"√W/2",
       "f.dpBit":"dpBit","f.maxIter":"MAX_ITER","f.Ej":"E[jumps]","f.Ei":"E[iter]","f.Em":"E[memory]","f.Et":"E[time]",
-      "f.memPerEntry":"Memory: ~{b} B/entry","f.tameStart":"Tame count = {s}, dir = {d}","f.wildStart":"Wild: start = Q, dir = {d}",
+      "f.memPerEntry":"Memory: ~{b} B/entry","f.tameStart":"Tame count = {s}, dir = {d}","f.wildStart":"Wild count = {s}, dir = {d}",
       "f.memory":"Memory:","f.tameMap":"tameMap","f.wildMap":"wildMap","f.total":"total","f.entries":"entries",
       "f.found":"FOUND","f.notFound":"NOT FOUND","f.cand":"x (candidate)","f.hex":"x (hex)",
       "f.getPub":"GetPub(x) = Q","f.matchHint":"x == xHint","f.inRng":"x ∈ [min,max)",
@@ -350,13 +322,14 @@
       "f.notInit":"✗ Failed to init kangaroos","f.selfTestFail":"SELF TEST FAILED","f.selfTestOK":"✓ SELF TEST OK",
       "f.qNotOnCurve":"✗ Q not on curve!","f.emptyRange":"✗ max ≤ min",
       "f.warnHuge":"⚠ ESTIMATE > 1e10 JUMPS","f.warnHuge2":"⚠ Use W < 2^40 or lower MAX_ITER",
-      "f.strict":"✓ close","f.far":"⚠ far","f.even":"even","f.odd":"odd"
+      "f.strict":"✓ close","f.far":"⚠ far","f.even":"even","f.odd":"odd",
+      "f.collision":"Collision detail"
     }
   },
   "ru": {
     "ui": {
       "title": "🐾 Pollard Kangaroo",
-      "g": {"mode":"1. Режим ввода","data":"2. Данные","range":"3. Диапазон поиска","params":"4. Параметры","control":"5. Управление","tame":"6. Ручные кенгуру"},
+      "g": {"mode":"1. Режим ввода","data":"2. Данные","range":"3. Диапазон поиска","params":"4. Параметры","control":"5. Управление","tame":"6. Ручные кенгуру","wild":"7. Дикие кенгуру"},
       "mode": {"private":"Приватный x (тест)","compressed":"Compressed Q (02/03 + X)","public":"Q.X, Q.Y (hex)"},
       "data": {
         "x":"x — приватный ключ (dec или 0x…)","xHint":"Пример: 11111 или 0x2b67.",
@@ -371,11 +344,16 @@
       "params": {
         "K":"K — размер таблицы прыжков","dp":"dpBit — distinguished point",
         "maxIter":"MAX_ITER — лимит итераций","dir":"Направление прыжков",
-        "dirR":"R — вверх","dirL":"L — вниз","speed":"Скорость, прыжков/сек"
+        "dirR":"R — вверх","dirL":"L — вниз","speed":"Скорость, прыжков/сек (для ETA)"
       },
       "tame": {
         "count":"Количество (1-20)","mode":"Режим старта","modeAuto":"Авто (равномерно в диапазоне)",
         "modeManual":"Вручную","modeRandom":"Случайно","starts":"Стартовые значения",
+        "genRandom":"🎲 Сгенерировать случайно"
+      },
+      "wild": {
+        "count":"Количество (1-20)","mode":"Режим смещений","modeAuto":"Авто (симметрично)",
+        "modeManual":"Вручную","modeRandom":"Случайно","starts":"Смещения (dec или 0x…)",
         "genRandom":"🎲 Сгенерировать случайно"
       },
       "ctrl": {
@@ -411,7 +389,7 @@
       }
     },
     "log": {
-      "glossary": "═══ ЛЕГЕНДА ОБОЗНАЧЕНИЙ ═══\n  x           приватный ключ (искомый скаляр)\n  Q           публичная точка, Q = x·G\n  G           генератор secp256k1\n  min, max    границы диапазона, x ∈ [min, max)\n  W           ширина диапазона, W = max − min\n  √W          корень из W; задаёт сложность (парадокс дней рождения)\n  K           размер таблицы прыжков; ср. прыжок = 2^K / K\n  dpBit       фильтр distinguished: младшие dpBit бит X = 0\n  2^dpBit     вероятность DP; больше → меньше памяти, итерации те же\n  MAX_ITER    лимит итераций\n  direction   R: +G·2^i (вверх), Tame с min; L: −G·2^i (вниз), Tame с max\n  Tame        «ручной» кенгуру(ы), стартует с min (или max при L)\n  Wild        «дикий» кенгуру, стартует с Q\n  tEff        накопленный шаг Tame (скаляр)\n  wTrack      накопленный шаг Wild (скаляр)\n  E[jumps]    = 2.5·√(W·T) — ожидаемое число прыжков (T ручных)\n  E[memory]   = √(W·T) / 2^dpBit — ожидаемое число записей в Map\n  ~250 B      памяти на запись Map (hex-key + BigInt + overhead)\n  При коллизии X-координат:\n    x = tameStart + sign·(tEff − wTrack)         (одинаковый Y)\n    x = −tameStart − sign·(tEff + wTrack)        (противоположный Y)\n════════════════════════════════════════",
+      "glossary": "═══ ЛЕГЕНДА ОБОЗНАЧЕНИЙ ═══\n  x           приватный ключ (искомый скаляр)\n  Q           публичная точка, Q = x·G\n  G           генератор secp256k1\n  min, max    границы диапазона, x ∈ [min, max)\n  W           ширина диапазона, W = max − min\n  √W          корень из W; задаёт сложность (парадокс дней рождения)\n  K           размер таблицы прыжков; ср. прыжок = 2^K / K\n  dpBit       фильтр distinguished: младшие dpBit бит X = 0\n  2^dpBit     вероятность DP; больше → меньше памяти, итерации те же\n  MAX_ITER    лимит итераций\n  direction   R: +G·2^i (вверх), Tame с min; L: −G·2^i (вниз), Tame с max\n  Tame        «ручной» кенгуру(ы), стартует с min (или max при L)\n  Wild        «дикий» кенгуру(ы), стартует с Q + смещение·G\n  tEff        накопленный шаг Tame (скаляр)\n  wTrack      накопленный шаг Wild (скаляр)\n  E[jumps]    = 2.5·√(W·T) — ожидаемое число прыжков (T ручных)\n  E[memory]   = √(W·T) / 2^dpBit — ожидаемое число записей в Map\n  ~250 B      памяти на запись Map (hex-key + BigInt + overhead)\n  При коллизии X-координат:\n    x = tameStart + sign·(tEff − wTrack)         (одинаковый Y)\n    x = −tameStart − sign·(tEff + wTrack)        (противоположный Y)\n════════════════════════════════════════",
       "hdr": "POLLARD KANGAROO — ПОДРОБНЫЙ ОТЧЁТ",
       "sec.input":"1. ВХОДНЫЕ ДАННЫЕ","sec.range":"2. ДИАПАЗОН ПОИСКА","sec.params":"3. ПАРАМЕТРЫ АЛГОРИТМА",
       "sec.expect":"4. ОЖИДАЕМЫЙ РЕЗУЛЬТАТ (ТЕОРИЯ)","sec.start":"5. СТАРТ ВЫЧИСЛЕНИЙ",
@@ -421,7 +399,7 @@
       "f.expMode":"степени 2","f.min":"min","f.max":"max","f.W":"W = max−min","f.sqrtW":"√W",
       "f.dir":"направление","f.K":"K (таблица)","f.avgJump":"ср. прыжок","f.sqrtHalf":"√W/2",
       "f.dpBit":"dpBit","f.maxIter":"MAX_ITER","f.Ej":"E[jumps]","f.Ei":"E[iter]","f.Em":"E[memory]","f.Et":"E[time]",
-      "f.memPerEntry":"Память: ~{b} B/запись","f.tameStart":"Кол-во Tame = {s}, dir = {d}","f.wildStart":"Wild: старт = Q, dir = {d}",
+      "f.memPerEntry":"Память: ~{b} B/запись","f.tameStart":"Кол-во Tame = {s}, dir = {d}","f.wildStart":"Кол-во Wild = {s}, dir = {d}",
       "f.memory":"Память:","f.tameMap":"tameMap","f.wildMap":"wildMap","f.total":"всего","f.entries":"записей",
       "f.found":"НАЙДЕНО","f.notFound":"НЕ НАЙДЕНО","f.cand":"x (кандидат)","f.hex":"x (hex)",
       "f.getPub":"GetPub(x) = Q","f.matchHint":"x == xHint","f.inRng":"x ∈ [min,max)",
@@ -438,7 +416,8 @@
       "f.notInit":"✗ Не удалось инициализировать","f.selfTestFail":"SELF TEST FAILED","f.selfTestOK":"✓ SELF TEST OK",
       "f.qNotOnCurve":"✗ Q не на кривой!","f.emptyRange":"✗ max ≤ min",
       "f.warnHuge":"⚠️ ОЦЕНКА > 1e10 ПРЫЖКОВ","f.warnHuge2":"⚠️ Используйте W < 2^40",
-      "f.strict":"✓ близко","f.far":"⚠ далеко","f.even":"чётный","f.odd":"нечётный"
+      "f.strict":"✓ близко","f.far":"⚠ далеко","f.even":"чётный","f.odd":"нечётный",
+      "f.collision":"Детали коллизии"
     }
   }
 }
@@ -527,6 +506,26 @@
             </div>
         </div>
         <div class="group">
+            <div class="group-title" data-i18n="ui.g.wild">7. Wild kangaroos</div>
+            <div class="field">
+                <label data-i18n="ui.wild.count">Count (1-20)</label>
+                <input type="number" id="in_wild_count" value="1" min="1" max="20">
+            </div>
+            <div class="field">
+                <label data-i18n="ui.wild.mode">Offset mode</label>
+                <select id="in_wild_mode">
+                    <option value="auto" data-i18n="ui.wild.modeAuto">Auto (symmetric)</option>
+                    <option value="manual" data-i18n="ui.wild.modeManual">Manual</option>
+                    <option value="random" data-i18n="ui.wild.modeRandom">Random</option>
+                </select>
+            </div>
+            <div class="field" id="field_wild_starts" style="display:none">
+                <label data-i18n="ui.wild.starts">Offsets</label>
+                <div id="wild_starts_list" class="tame-starts-list"></div>
+                <button id="btn_gen_random_wilds" class="secondary" style="margin-top:4px;" data-i18n="ui.wild.genRandom">🎲 Generate Random</button>
+            </div>
+        </div>
+        <div class="group">
             <div class="group-title" data-i18n="ui.g.control">5. Control</div>
             <div class="btn-grid">
                 <button id="btn_auto" class="secondary" data-i18n="ui.ctrl.auto">Auto</button>
@@ -585,7 +584,7 @@
 </div>
 
 <div id="footer">
-    <div>pollard kangaroo v 1.1 · by <b>Fantom-C</b></div>
+    <div>pollard kangaroo · by <b>Fantom-C</b></div>
     <div class="donate">
         <span class="donate-label">₿ donate:</span>
         <span class="donate-addr"><b>1Eifq7WGfTjLUF6jbdoK9BMqYJ69nEfo7m</b></span>
@@ -818,12 +817,35 @@ async function runSearch(p) {
     }
     const tameCount = tameStarts.length;
 
+    const wildStartsRaw = p.wildStarts || ['0'];
+    const wildOffsets = wildStartsRaw.map(s => BigInt(s));
+    const Wilds = [];
+    for (let i = 0; i < wildOffsets.length; i++) {
+        const o = wildOffsets[i];
+        let W_Q;
+        if (o === 0n) {
+            W_Q = Q;
+        } else {
+            const offsetPoint = ec.mul(ec.G, o);
+            W_Q = ec.add(Q, offsetPoint);
+        }
+        if (!W_Q) continue;
+        const W = new Kangaroo(0n, K, direction, ec);
+        W.SetPoint(W_Q);
+        Wilds.push({ k: W, offset: o });
+    }
+
+    if (Wilds.length === 0 || tameStarts.some(t => !t)) {
+        wlog(t('log.f.notInit'), 'log-err');
+        self.postMessage({type:'done',found:null,error:'init',tameSize:0,wildSize:0}); return;
+    }
+
     const kRange = W.toString(2).length;
     const sqrtW = W < (1n << 50n) ? Math.sqrt(Number(W)) : Math.pow(2, kRange / 2);
     const dpMult = Math.pow(2, dpBit);
-    const expectedTotalJumps = 2.5 * sqrtW * Math.sqrt(tameCount);
-    const expectedIterations = expectedTotalJumps / (1 + tameCount);
-    const expectedMemory = Math.ceil(2 * sqrtW * Math.sqrt(tameCount) / dpMult);
+    const expectedTotalJumps = 2.5 * sqrtW * Math.sqrt(tameCount + Wilds.length);
+    const expectedIterations = expectedTotalJumps / (1 + tameCount + Wilds.length);
+    const expectedMemory = Math.ceil(2 * sqrtW * Math.sqrt(tameCount + Wilds.length) / dpMult);
     const expectedMemoryBytes = expectedMemory * BYTES_PER_ENTRY;
     const expectedTime = expectedTotalJumps / SPEED_INIT;
     const avgJump = Math.pow(2, K) / K;
@@ -866,7 +888,7 @@ async function runSearch(p) {
     wlog(`   ${t('log.f.maxIter').padEnd(13)} = ${MAX_ITER}`, 'log-line'); wlog('');
 
     wlog(line(), 'log-sep'); wlog(' ' + t('log.sec.expect'), 'log-head'); wlog(line(), 'log-sep');
-    wlog(`   ${t('log.f.Ej').padEnd(13)} ≈ 2.5 · ${sqrtW.toExponential(3)} · √${tameCount} = ${fmtNum(expectedTotalJumps)}`, 'log-line');
+    wlog(`   ${t('log.f.Ej').padEnd(13)} ≈ 2.5 · ${sqrtW.toExponential(3)} · √${tameCount + Wilds.length} = ${fmtNum(expectedTotalJumps)}`, 'log-line');
     wlog(`   ${t('log.f.Ei').padEnd(13)} ≈ ${fmtNum(expectedIterations)}`, 'log-line');
     wlog(`   ${t('log.f.Em').padEnd(13)} ≈ ${fmtNum(expectedMemory)} entries (~${fmtBytes(expectedMemoryBytes)})`, 'log-line');
     wlog(`   ${t('log.f.Et').padEnd(13)} ≈ ${fmtTime(expectedTime)} @ ${fmtNum(SPEED_INIT)}/s`, 'log-line');
@@ -893,25 +915,14 @@ async function runSearch(p) {
         return Tame;
     });
 
-    let Wild = new Kangaroo(0n, K, direction, ec);
-    Wild.SetPoint(Q);
-
-    if (!Wild.point || Tames.some(t => !t.point)) {
-        wlog(t('log.f.notInit'), 'log-err');
-        self.postMessage({type:'done',found:null,error:'init',tameSize:0,wildSize:0}); return;
-    }
-
     wlog(`   ${t('log.f.tameStart', {s: tameCount, d: direction})}`, 'log-line');
-    if (tameCount <= 4) {
-        wlog(`   Tame starts  = ${tameStarts.map(s => s.toString()).join(', ')}`, 'log-info');
-    }
-    wlog(`   ${t('log.f.wildStart', {d: direction})}`, 'log-line'); wlog('');
+    wlog(`   ${t('log.f.wildStart', {s: Wilds.length, d: direction})}`, 'log-line'); wlog('');
 
     const tameMap = new Map(), wildMap = new Map();
-    const tryHit = (tEff, wTrack) => {
+    const tryHit = (tEff, wTrack, wOffsetScalar) => {
         const wOffset = tameSign * wTrack;
-        const c1 = (( tEff - wOffset) % ec.N + ec.N) % ec.N;
-        const c2 = ((-tEff - wOffset) % ec.N + ec.N) % ec.N;
+        const c1 = (( tEff - wOffset - wOffsetScalar) % ec.N + ec.N) % ec.N;
+        const c2 = ((-tEff - wOffset - wOffsetScalar) % ec.N + ec.N) % ec.N;
         for (const cand of [c1, c2]) {
             if (cand === 0n) continue;
             const P = ec.GetPub(cand);
@@ -924,47 +935,74 @@ async function runSearch(p) {
     let iter = 0, totalJumps = 0, found = null;
     let lastYield = t0, chunk = 0, lastPosSend = t0;
     const maxIterBig = BigInt(MAX_ITER);
+    
+    let collidedWild = -1;
+    let collidedTame = -1;
 
     while (!stopRequested && BigInt(iter) < maxIterBig) {
         iter++; 
-        totalJumps += 1 + tameCount;
+        totalJumps += 1 + tameCount + Wilds.length;
         chunk++;
         
-        // 1. Check collisions
-        const wKey = Wild.point.x.toString(16);
-        if (tameMap.has(wKey)) {
-            const tEff = tameMap.get(wKey);
-            found = tryHit(tEff, Wild.track);
-            if (found) break;
+        // 1. Check collisions (Wild vs Tame)
+        for (let i = 0; i < Wilds.length; i++) {
+            if (!Wilds[i].k.point) continue;
+            const wKey = Wilds[i].k.point.x.toString(16);
+            if (tameMap.has(wKey)) {
+                const data = tameMap.get(wKey);
+                found = tryHit(data.tEff, Wilds[i].k.track, Wilds[i].offset);
+                if (found) {
+                    collidedWild = i;
+                    collidedTame = data.tameIndex;
+                    break;
+                }
+            }
         }
-        for (let i = 0; i < tameCount; i++) {
-            const tKey = Tames[i].point.x.toString(16);
-            if (wildMap.has(tKey)) {
-                const wTrack = wildMap.get(tKey);
-                const tEff = Tames[i].scalar + tameSign * Tames[i].track;
-                found = tryHit(tEff, wTrack);
-                if (found) break;
+        
+        if (!found) {
+            for (let i = 0; i < tameCount; i++) {
+                if (!Tames[i].point) continue;
+                const tKey = Tames[i].point.x.toString(16);
+                if (wildMap.has(tKey)) {
+                    const wData = wildMap.get(tKey);
+                    const tEff = Tames[i].scalar + tameSign * Tames[i].track;
+                    found = tryHit(tEff, wData.track, wData.offset);
+                    if (found) {
+                        collidedWild = wData.wildIndex;
+                        collidedTame = i;
+                        break;
+                    }
+                }
             }
         }
         if (found) break;
 
         // 2. Update maps
-        if (Wild.point.DP(dpBit)) {
-            wildMap.set(wKey, Wild.track);
+        for (let i = 0; i < Wilds.length; i++) {
+            if (Wilds[i].k.point && Wilds[i].k.point.DP(dpBit)) {
+                wildMap.set(Wilds[i].k.point.x.toString(16), { 
+                    track: Wilds[i].k.track, 
+                    offset: Wilds[i].offset,
+                    wildIndex: i
+                });
+            }
         }
         for (let i = 0; i < tameCount; i++) {
             if (Tames[i].point.DP(dpBit)) {
                 const tKey = Tames[i].point.x.toString(16);
                 const tEff = Tames[i].scalar + tameSign * Tames[i].track;
-                tameMap.set(tKey, tEff);
+                tameMap.set(tKey, { 
+                    tEff: tEff,
+                    tameIndex: i 
+                });
             }
         }
 
         // 3. Jump
-        Wild.jump();
+        for (let i = 0; i < Wilds.length; i++) Wilds[i].k.jump();
         for (let i = 0; i < tameCount; i++) Tames[i].jump();
         
-        if (!Wild.point || Tames.some(t => !t.point)) {
+        if (Wilds.some(w => !w.k.point) || Tames.some(t => !t.point)) {
             wlog(t('log.f.warnJump'), 'log-warn');
             break;
         }
@@ -978,7 +1016,7 @@ async function runSearch(p) {
                 const speed = totalJumps / dt;
                 const target = Math.min(MAX_ITER, expectedIterations);
                 const rem = Math.max(0, target - iter);
-                const eta = speed > 0 && rem > 0 ? rem * (1 + tameCount) / speed : Infinity;
+                const eta = speed > 0 && rem > 0 ? rem * (1 + tameCount + Wilds.length) / speed : Infinity;
                 const pct = Math.min(100, iter / expectedIterations * 100);
                 const fill = Math.min(25, Math.floor(pct / 4));
                 const bar = '█'.repeat(fill) + '░'.repeat(25 - fill);
@@ -996,11 +1034,14 @@ async function runSearch(p) {
 
             if (now - lastPosSend > 50) {
                 const tPositions = Tames.map(t => (t.scalar + tameSign * t.track).toString());
-                const wildPos = xHint != null ? (xHint + tameSign * Wild.track).toString() : null;
+                const wPositions = Wilds.map(w => {
+                    if (xHint != null) return (xHint + w.offset + tameSign * w.k.track).toString();
+                    return null;
+                });
                 self.postMessage({
                     type: 'positions',
                     tames: tPositions,
-                    wild: wildPos,
+                    wilds: wPositions,
                     iter: iter
                 });
                 lastPosSend = now;
@@ -1010,11 +1051,14 @@ async function runSearch(p) {
 
     {
         const tPositions = Tames.map(t => (t.scalar + tameSign * t.track).toString());
-        const wildPos = xHint != null ? (xHint + tameSign * Wild.track).toString() : null;
+        const wPositions = Wilds.map(w => {
+            if (xHint != null) return (xHint + w.offset + tameSign * w.k.track).toString();
+            return null;
+        });
         self.postMessage({
             type: 'positions',
             tames: tPositions,
-            wild: wildPos,
+            wilds: wPositions,
             iter: iter
         });
     }
@@ -1047,6 +1091,7 @@ async function runSearch(p) {
     }
 
     wlog(`   ✅ ${t('log.f.found')}`, 'log-found');
+    wlog(`   ${t('log.f.collision').padEnd(15)} : W${collidedWild + 1} collided with T${collidedTame + 1}`, 'log-ok');
     wlog(`   ${t('log.f.cand').padEnd(15)} = ${found}`, 'log-line');
     wlog(`   ${t('log.f.hex').padEnd(15)} = 0x${found.toString(16)}`, 'log-line');
     const finalOK = ec.GetPub(found).equals(Q);
@@ -1226,15 +1271,15 @@ class ScalarCirclePlotter {
         this.N_HALF = this.N / 2n;
         this.LG_HALF = log2BigInt(this.N_HALF);
         this.mode = 'range';
-        this.x_true = null; this.tames = []; this.wild = null;
+        this.x_true = null; this.tames = []; this.wilds = [];
         this.rangeMin = null; this.rangeMax = null;
-        this.tameTrails = []; this.wildTrail = [];
+        this.tameTrails = []; this.wildTrails = [];
         this.sizeW = 0; this.sizeH = 0;
         this._resize();
     }
     _resize() {
         const wrap = this.canvas.parentElement;
-        const targetW = Math.max(240, Math.min(600, wrap.clientWidth - 20));
+        const targetW = Math.min(600, Math.max(240, wrap.clientWidth - 20));
         const dpr = Math.max(1, window.devicePixelRatio || 1);
         const backingW = Math.round(targetW * dpr);
         
@@ -1248,11 +1293,11 @@ class ScalarCirclePlotter {
         this.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
         this.draw();
     }
-    setMode(m) { this.mode = m; this.tameTrails = []; this.wildTrail = []; this.draw(); }
+    setMode(m) { this.mode = m; this.tameTrails = []; this.wildTrails = []; this.draw(); }
     setX(x) { this.x_true = x; this.draw(); }
     setRange(min, max) { this.rangeMin = min; this.rangeMax = max; this.draw(); }
-    reset() { this.x_true = null; this.tames = []; this.wild = null; this.tameTrails = []; this.wildTrail = []; this.draw(); }
-    update(tames, wild) {
+    reset() { this.x_true = null; this.tames = []; this.wilds = []; this.tameTrails = []; this.wildTrails = []; this.draw(); }
+    update(tames, wilds) {
         if (tames) {
             this.tames = tames;
             if (!this.tameTrails) this.tameTrails = tames.map(() => []);
@@ -1264,10 +1309,16 @@ class ScalarCirclePlotter {
                 }
             }
         }
-        this.wild = wild;
-        if (wild != null) {
-            this.wildTrail.push(wild);
-            if (this.wildTrail.length > 60) this.wildTrail.shift();
+        if (wilds) {
+            this.wilds = wilds;
+            if (!this.wildTrails) this.wildTrails = wilds.map(() => []);
+            for (let i = 0; i < wilds.length; i++) {
+                if (wilds[i] != null) {
+                    if (!this.wildTrails[i]) this.wildTrails[i] = [];
+                    this.wildTrails[i].push(wilds[i]);
+                    if (this.wildTrails[i].length > 60) this.wildTrails[i].shift();
+                }
+            }
         }
         this.draw();
     }
@@ -1375,11 +1426,14 @@ class ScalarCirclePlotter {
 
         if (this.tameTrails) {
             for (let i = 0; i < this.tameTrails.length; i++) {
-                const color = TAME_COLORS[i % TAME_COLORS.length];
-                this._drawTrail(this.tameTrails[i], color);
+                this._drawTrail(this.tameTrails[i], TAME_COLORS[i % TAME_COLORS.length]);
             }
         }
-        this._drawTrail(this.wildTrail, '#ffd54f');
+        if (this.wildTrails) {
+            for (let i = 0; i < this.wildTrails.length; i++) {
+                this._drawTrail(this.wildTrails[i], '#ffd54f');
+            }
+        }
 
         if (this.x_true != null) {
             const a = this.scalarToAngle(this.x_true);
@@ -1391,9 +1445,14 @@ class ScalarCirclePlotter {
                 if (a != null) this._drawPoint(this.cx + this.R * Math.sin(a), this.cy - this.R * Math.cos(a), TAME_COLORS[i % TAME_COLORS.length], 'T' + (i+1), 5);
             }
         }
-        if (this.wild != null) {
-            const a = this.scalarToAngle(this.wild);
-            if (a != null) this._drawPoint(this.cx + this.R * Math.sin(a), this.cy - this.R * Math.cos(a), '#ffd54f', 'W', 5);
+        if (this.wilds) {
+            for (let i = 0; i < this.wilds.length; i++) {
+                const a = this.scalarToAngle(this.wilds[i]);
+                if (a != null) {
+                    const size = this.wilds.length > 5 ? 3 : 5;
+                    this._drawPoint(this.cx + this.R * Math.sin(a), this.cy - this.R * Math.cos(a), '#ffd54f', 'W' + (i+1), size);
+                }
+            }
         }
     }
 }
@@ -1407,7 +1466,7 @@ class ConvergencePlotter {
         this.ctx = canvas.getContext('2d');
         this.min = null; this.max = null;
         this.x_true = null;
-        this.tames = []; this.wild = null;
+        this.tames = []; this.wilds = [];
         this.tameBins = null; this.wildBins = null;
         this.binCount = 50;
         this.collided = false;
@@ -1435,7 +1494,7 @@ class ConvergencePlotter {
     }
     reset(min, max, x) {
         this.min = min; this.max = max; this.x_true = x;
-        this.tames = []; this.wild = null;
+        this.tames = []; this.wilds = [];
         this.collided = false; this.iter = 0;
         this.tameBins = new Array(this.binCount).fill(0);
         this.wildBins = new Array(this.binCount).fill(0);
@@ -1452,7 +1511,7 @@ class ConvergencePlotter {
         const idx = Math.floor(rel * this.binCount);
         return Math.max(0, Math.min(this.binCount - 1, idx));
     }
-    update(tames, wild, iter, collided) {
+    update(tames, wilds, iter, collided) {
         this.iter = iter || 0;
         if (tames) {
             this.tames = tames;
@@ -1463,10 +1522,14 @@ class ConvergencePlotter {
                 }
             }
         }
-        if (wild != null) {
-            this.wild = wild;
-            const i = this._binIndex(wild);
-            this.wildBins[i]++;
+        if (wilds) {
+            this.wilds = wilds;
+            for (const w of wilds) {
+                if (w != null) {
+                    const i = this._binIndex(w);
+                    this.wildBins[i]++;
+                }
+            }
         }
         if (collided) this.collided = true;
         this.draw();
@@ -1494,8 +1557,12 @@ class ConvergencePlotter {
             parts.push(t('ui.conv.noTame'));
         }
 
-        if (this.wild != null) parts.push(t('ui.conv.wild', {p: this.wild.toString(), i: this.iter}));
-        else parts.push(t('ui.conv.noWild'));
+        if (this.wilds && this.wilds.length > 0) {
+            const wildStr = this.wilds.map((w, i) => `W${i+1}:${w}`).join(', ');
+            parts.push(wildStr);
+        } else {
+            parts.push(t('ui.conv.noWild'));
+        }
 
         info.textContent = parts.join(' · ');
 
@@ -1576,13 +1643,17 @@ class ConvergencePlotter {
             }
         }
 
-        if (this.wild != null) {
-            const px = toPos(this.wild);
-            ctx.fillStyle = '#ffd54f';
-            ctx.beginPath(); ctx.arc(px, lineY + 5, 4.5, 0, 2 * Math.PI); ctx.fill();
-            ctx.fillStyle = '#ffd54f'; ctx.font = 'bold 9px monospace';
-            ctx.textAlign = 'center'; ctx.textBaseline = 'top';
-            ctx.fillText('W', px, lineY + 11);
+        if (this.wilds) {
+            for (let i = 0; i < this.wilds.length; i++) {
+                const w = this.wilds[i];
+                if (w == null) continue;
+                const px = toPos(w);
+                ctx.fillStyle = '#ffd54f';
+                ctx.beginPath(); ctx.arc(px, lineY + 5, 4.5, 0, 2 * Math.PI); ctx.fill();
+                ctx.font = 'bold 9px monospace';
+                ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+                ctx.fillText('W' + (i+1), px, lineY + 11);
+            }
         }
 
         const binW = chartW / this.binCount;
@@ -1656,6 +1727,10 @@ const btnGenRandomTames = $('btn_gen_random_tames');
 const tameStartsList = $('tame_starts_list');
 const inTameCount = $('in_tame_count');
 const inTameMode = $('in_tame_mode');
+const btnGenRandomWilds = $('btn_gen_random_wilds');
+const wildStartsList = $('wild_starts_list');
+const inWildCount = $('in_wild_count');
+const inWildMode = $('in_wild_mode');
 
 const circlePlotter = new ScalarCirclePlotter($('circlePlot'));
 const convPlotter = new ConvergencePlotter($('convPlot'));
@@ -1696,7 +1771,7 @@ function setMemInfo(tame, wild) {
     const total = tame + wild;
     statusMem.textContent = `${tame.toLocaleString()} + ${wild.toLocaleString()} = ${total.toLocaleString()} entries (~${fmtBytes(total * BYTES_PER_ENTRY)})`;
 }
-function setCircleInfo(x, tames, wild) {
+function setCircleInfo(x, tames, wilds) {
     const rows = [];
     if (x != null) rows.push(`<div class="row-x">x = ${x}</div>`);
     if (tames) {
@@ -1704,7 +1779,11 @@ function setCircleInfo(x, tames, wild) {
             if (t != null) rows.push(`<div style="color:${TAME_COLORS[i % TAME_COLORS.length]}">T${i+1} = ${t}</div>`);
         });
     }
-    if (wild != null) rows.push(`<div class="row-w">Wild = ${wild}</div>`);
+    if (wilds) {
+        wilds.forEach((w, i) => {
+            if (w != null) rows.push(`<div class="row-w">W${i+1} = ${w}</div>`);
+        });
+    }
     if (rows.length === 0) rows.push(`<div style="color:#555">${t('ui.circle.noData')}</div>`);
     circleInfo.innerHTML = rows.join('');
 }
@@ -1715,7 +1794,7 @@ function readNum(str) {
     if (!str) return null;
     try {
         if (/^0x/i.test(str)) return BigInt(str);
-        if (/[a-fA-F]/.test(str)) return BigInt('0x' + str);        
+        if (/[a-fA-F]/.test(str)) return BigInt('0x' + str);
         return BigInt(str);
     } catch { return null; }
 }
@@ -1747,7 +1826,8 @@ function updateTameStartsUI() {
     const count = Math.max(1, Math.min(20, parseInt(inTameCount.value, 10) || 1));
     inTameCount.value = count;
     const mode = inTameMode.value;
-    
+    const range = getCurrentRange();
+
     if (mode === 'manual') {
         $('field_tame_starts').style.display = '';
         const currentVals = [];
@@ -1759,7 +1839,26 @@ function updateTameStartsUI() {
             inp.type = 'text';
             inp.className = 'tame-start-input';
             inp.placeholder = `Tame ${i+1} start`;
+            inp.readOnly = false;
+            inp.disabled = false;
+            inp.spellcheck = false;
             if (i < currentVals.length) inp.value = currentVals[i];
+            
+            const checkRange = () => {
+                const r = getCurrentRange();
+                const v = readNum(inp.value);
+                if (r && v != null && (v < r.min || v >= r.max)) {
+                    inp.style.borderColor = '#ff5252';
+                    inp.title = `Вне диапазона [${r.min}, ${r.max})`;
+                } else {
+                    inp.style.borderColor = '';
+                    inp.title = '';
+                }
+            };
+            inp.addEventListener('input', checkRange);
+            inp.addEventListener('blur', checkRange);
+            checkRange();
+            
             tameStartsList.appendChild(inp);
         }
     } else if (mode === 'random') {
@@ -1804,9 +1903,85 @@ function generateRandomTames() {
     }
 }
 
+function updateWildStartsUI() {
+    const count = Math.max(1, Math.min(20, parseInt(inWildCount.value, 10) || 1));
+    inWildCount.value = count;
+    const mode = inWildMode.value;
+
+    if (mode === 'manual') {
+        $('field_wild_starts').style.display = '';
+        const currentVals = [];
+        wildStartsList.querySelectorAll('.tame-start-input').forEach(inp => currentVals.push(inp.value));
+        
+        wildStartsList.innerHTML = '';
+        for (let i = 0; i < count; i++) {
+            const inp = document.createElement('input');
+            inp.type = 'text';
+            inp.className = 'tame-start-input';
+            inp.placeholder = `Wild ${i+1} offset`;
+            inp.readOnly = false;
+            inp.disabled = false;
+            inp.spellcheck = false;
+            if (i < currentVals.length) inp.value = currentVals[i];
+            wildStartsList.appendChild(inp);
+        }
+    } else if (mode === 'random') {
+        $('field_wild_starts').style.display = '';
+        wildStartsList.innerHTML = '';
+        for (let i = 0; i < count; i++) {
+            const inp = document.createElement('input');
+            inp.type = 'text';
+            inp.className = 'tame-start-input';
+            inp.placeholder = `Wild ${i+1} offset`;
+            inp.readOnly = true;
+            wildStartsList.appendChild(inp);
+        }
+        generateRandomWilds();
+    } else {
+        $('field_wild_starts').style.display = 'none';
+    }
+}
+
+function generateRandomWilds() {
+    const range = getCurrentRange();
+    if (!range) { log('Set range first', 'log-warn'); return; }
+    const count = Math.max(1, Math.min(20, parseInt(inWildCount.value, 10) || 1));
+    const W = range.max - range.min;
+    const bytes = Math.ceil(W.toString(2).length / 8) || 1;
+    
+    wildStartsList.innerHTML = '';
+    // First wild is always 0 offset
+    const inp0 = document.createElement('input');
+    inp0.type = 'text';
+    inp0.className = 'tame-start-input';
+    inp0.value = '0';
+    inp0.readOnly = true;
+    wildStartsList.appendChild(inp0);
+
+    for (let i = 1; i < count; i++) {
+        let rnd = 0n;
+        const arr = new Uint8Array(bytes);
+        crypto.getRandomValues(arr);
+        for (const b of arr) rnd = (rnd << 8n) | BigInt(b);
+        const delta = rnd % W;
+        const sign = Math.random() < 0.5 ? 1n : -1n;
+        
+        const inp = document.createElement('input');
+        inp.type = 'text';
+        inp.className = 'tame-start-input';
+        inp.value = (sign * delta).toString();
+        inp.readOnly = true;
+        wildStartsList.appendChild(inp);
+    }
+}
+
 inTameCount.addEventListener('change', updateTameStartsUI);
 inTameMode.addEventListener('change', updateTameStartsUI);
 btnGenRandomTames.addEventListener('click', generateRandomTames);
+
+inWildCount.addEventListener('change', updateWildStartsUI);
+inWildMode.addEventListener('change', updateWildStartsUI);
+btnGenRandomWilds.addEventListener('click', generateRandomWilds);
 
 function applyLang() {
     document.documentElement.lang = LANG;
@@ -1831,6 +2006,7 @@ function resetParams() {
     circlePlotter.reset(); setCircleInfo(null, null, null);
     convPlotter.reset(null, null, null);
     updateTameStartsUI();
+    updateWildStartsUI();
 }
 
 function onModeChange() {
@@ -1848,6 +2024,8 @@ function onExpChange() {
     $('lbl_max').textContent = t(on ? 'ui.range.maxExp' : 'ui.range.max');
     $('range_hint').textContent = t(on ? 'ui.range.hint' : 'ui.range.hintNoExp');
     refreshPlaceholders();
+    if (inTameMode.value === 'random') generateRandomTames();
+    if (inWildMode.value === 'random') generateRandomWilds();
 }
 modeSel.addEventListener('change', onModeChange);
 expCb.addEventListener('change', onExpChange);
@@ -2002,10 +2180,10 @@ function ensureWorker() {
             if (msg.mem) setMemInfo(msg.mem.tame, msg.mem.wild);
         } else if (msg.type === 'positions') {
             const tames = msg.tames ? msg.tames.map(s => BigInt(s)) : [];
-            const wild = msg.wild ? BigInt(msg.wild) : null;
-            circlePlotter.update(tames, wild);
-            setCircleInfo(circlePlotter.x_true, tames, wild);
-            convPlotter.update(tames, wild, msg.iter || 0, false);
+            const wilds = msg.wilds ? msg.wilds.map(s => s ? BigInt(s) : null) : [];
+            circlePlotter.update(tames, wilds);
+            setCircleInfo(circlePlotter.x_true, tames, wilds);
+            convPlotter.update(tames, wilds, msg.iter || 0, false);
         } else if (msg.type === 'jumptable') {
             renderJumpTable(msg.rows, msg.K, msg.dir);
         } else if (msg.type === 'done') {
@@ -2013,7 +2191,7 @@ function ensureWorker() {
             if (msg.tameSize != null && msg.wildSize != null) setMemInfo(msg.tameSize, msg.wildSize);
             if (msg.found) {
                 setStatus(t('ui.ctrl.found', {x: msg.found}), false);
-                convPlotter.update(convPlotter.tames, convPlotter.wild, msg.iter || convPlotter.iter, true);
+                convPlotter.update(convPlotter.tames, convPlotter.wilds, msg.iter || convPlotter.iter, true);
             } else {
                 setStatus(t(msg.stopped ? 'ui.ctrl.stopped' : 'ui.ctrl.notFound'), false);
             }
@@ -2123,6 +2301,57 @@ btnStart.addEventListener('click', () => {
             tameStarts = tameStarts.slice(0, tameCount);
         }
 
+        for (const ts of tameStarts) {
+            const tsVal = BigInt(ts);
+            if (tsVal < range.min || tsVal >= range.max) {
+                log(`Ошибка: Tame start ${tsVal} вне диапазона [${range.min}, ${range.max}). Нажмите 🎲 Generate Random заново.`, 'log-err');
+                btnStart.disabled = false; btnStop.disabled = true;
+                btnJumpTable.disabled = false; btnGetY.disabled = false;
+                setStatus(t('ui.ctrl.ready'), false);
+                return;
+            }
+        }
+
+        const wildCount = Math.max(1, Math.min(20, parseInt(inWildCount.value, 10) || 1));
+        const wildMode = inWildMode.value;
+        let wildStarts = [];
+
+        if (wildMode === 'auto') {
+            const W = range.max - range.min;
+            wildStarts.push('0');
+            let step = 1;
+            while (wildStarts.length < wildCount) {
+                const delta = (W * BigInt(step)) / BigInt(Math.max(1, Math.ceil(wildCount / 2)));
+                wildStarts.push(delta.toString());
+                if (wildStarts.length < wildCount) {
+                    wildStarts.push((-delta).toString());
+                }
+                step++;
+            }
+            wildStarts = wildStarts.slice(0, wildCount);
+        } else if (wildMode === 'random') {
+            const W = range.max - range.min;
+            const bytes = Math.ceil(W.toString(2).length / 8) || 1;
+            wildStarts.push('0');
+            for (let i = 1; i < wildCount; i++) {
+                let rnd = 0n;
+                const arr = new Uint8Array(bytes);
+                crypto.getRandomValues(arr);
+                for (const b of arr) rnd = (rnd << 8n) | BigInt(b);
+                const delta = rnd % W;
+                const sign = Math.random() < 0.5 ? 1n : -1n;
+                wildStarts.push((sign * delta).toString());
+            }
+        } else {
+            const inputs = wildStartsList.querySelectorAll('.tame-start-input');
+            for (const inp of inputs) {
+                const val = readNum(inp.value);
+                if (val != null) wildStarts.push(val.toString());
+            }
+            while (wildStarts.length < wildCount) wildStarts.push('0');
+            wildStarts = wildStarts.slice(0, wildCount);
+        }
+
         btnStart.disabled = true; btnStop.disabled = false;
         btnJumpTable.disabled = true; btnGetY.disabled = true;
         setStatus(t('ui.ctrl.running'), true);
@@ -2150,7 +2379,8 @@ btnStart.addEventListener('click', () => {
                 K, dpBit, maxIter, direction, speedHint,
                 xHint: q.mode === 'private' ? q.x.toString() : null,
                 modeLabel,
-                tameStarts: tameStarts
+                tameStarts: tameStarts,
+                wildStarts: wildStarts
             }
         });
     } catch (e) {
@@ -2164,6 +2394,14 @@ btnStart.addEventListener('click', () => {
 ['in_x', 'in_comp', 'in_Qx', 'in_Qy'].forEach(id => {
     $(id).addEventListener('input', refreshPlaceholders);
     $(id).addEventListener('change', resetParams);
+});
+
+['in_min', 'in_maxrange'].forEach(id => {
+    $(id).addEventListener('input', refreshPlaceholders);
+    $(id).addEventListener('change', () => {
+        if (inTameMode.value === 'random') generateRandomTames();
+        if (inWildMode.value === 'random') generateRandomWilds();
+    });
 });
 
 if (typeof ResizeObserver !== 'undefined') {
@@ -2183,6 +2421,7 @@ applyLang();
 onModeChange();
 onExpChange();
 updateTameStartsUI();
+updateWildStartsUI();
 </script>
 </body>
 </html>
