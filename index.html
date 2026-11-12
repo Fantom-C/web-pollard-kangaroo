@@ -584,7 +584,7 @@
 </div>
 
 <div id="footer">
-    <div>pollard kangaroo · by <b>Fantom-C</b></div>
+    <div>pollard kangaroo v1.3 by <b>Fantom-C</b></div>
     <div class="donate">
         <span class="donate-label">₿ donate:</span>
         <span class="donate-addr"><b>1Eifq7WGfTjLUF6jbdoK9BMqYJ69nEfo7m</b></span>
@@ -2285,7 +2285,7 @@ btnStart.addEventListener('click', () => {
                 if (direction === 'R') {
                     startVal = range.min + (W * BigInt(i)) / BigInt(tameCount);
                 } else {
-                    startVal = range.max - (W * BigInt(i)) / BigInt(tameCount);
+                    startVal = range.max - 1n - (W * BigInt(i)) / BigInt(tameCount);
                 }
                 tameStarts.push(startVal.toString());
             }
